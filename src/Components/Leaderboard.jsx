@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getTopScores } from '../utils/firebase';
 
 function Leaderboard() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const username = location.state?.username || "User";
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,7 +52,7 @@ function Leaderboard() {
       )}
       
       <button 
-        onClick={() => navigate('/home')} 
+        onClick={() => navigate('/home', { state: { username } })} 
         className="cyber-button"
         style={{ marginTop: '2rem' }}
       >
@@ -60,4 +62,4 @@ function Leaderboard() {
   );
 }
 
-export default Leaderboard;
+export default Leaderboard;

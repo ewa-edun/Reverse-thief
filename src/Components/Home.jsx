@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function Home() {
     const navigate = useNavigate();
     const location = useLocation();
-    const username = location.state?.username || "Hacker";
+    const username = location.state?.username || "User";
 
     const scams = [
         {
