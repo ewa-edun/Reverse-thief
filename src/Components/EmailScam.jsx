@@ -29,6 +29,7 @@ function EmailScam() {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
+      setLoading(true);
       const correctAnswers = questions.map(q => q.correctAnswer);
       const feedback = await getPersonalizedFeedback(
         'email phishing',
@@ -36,6 +37,7 @@ function EmailScam() {
         correctAnswers
       );
       setFeedback(feedback);
+      setLoading(false);
       setSubmitted(true);
     }
   };
@@ -43,7 +45,10 @@ function EmailScam() {
   if (loading) {
     return (
       <div className="scam-page">
-        <h1 className="scam-header">Loading Scenarios...</h1>
+        <div className="loading-container">
+          <div className="loading-spinner" />
+          <p className="loading-text">Analyzing Scenarios...</p>
+        </div>
       </div>
     );
   }
@@ -53,6 +58,16 @@ function EmailScam() {
       <h1 className="scam-header">Email Scam Simulator</h1>
       {!submitted ? (
         <>
+          <div className="progress-dots">
+            {[...Array(questions.length)].map((_, index) => (
+              <div
+                key={index}
+                className={`dot ${index === currentQuestion ? 'active' : ''} ${
+                  index < currentQuestion ? 'completed' : ''
+                }`}
+              />
+            ))}
+          </div>
           <p className="scam-description">
             Question {currentQuestion + 1} of {questions.length}
           </p>

@@ -1,43 +1,86 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { generateScamQuestions, getPersonalizedFeedback } from '../utils/gemini';
 
 function GiveawayScam() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ claim: '' });
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const [feedback, setFeedback] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    async function loadQuestions() {
+      const generatedQuestions = await generateScamQuestions('giveaway scam');
+      if (generatedQuestions) {
+        setQuestions(generatedQuestions);
+        setLoading(false);
+      }
+    }
+    loadQuestions();
+  }, []);
+
+  const handleAnswer = async (selectedOption) => {
+    const answers = [...userAnswers, selectedOption];
+    setUserAnswers(answers);
+
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setLoading(true);
+      const correctAnswers = questions.map(q => q.correctAnswer);
+      const aiFeedback = await getPersonalizedFeedback('giveaway scam', answers, correctAnswers);
+      setFeedback(aiFeedback);
+      setLoading(false);
+      setSubmitted(true);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulate Gemini AI feedback for giveaway trap
-    setFeedback("Gemini Bot: Free giveaways are often a lure to collect your personal data. Always verify the legitimacy of such prizes.");
-    setSubmitted(true);
-  };
+  if (loading) {
+    return (
+      <div className="scam-page">
+        <div className="loading-container">
+          <div className="loading-spinner" />
+          <p className="loading-text">Analyzing Scenarios...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="scam-page">
-      <h1 className="scam-header">Fake Giveaway Scam</h1>
+      <h1 className="scam-header">Giveaway Scam Simulator</h1>
       {!submitted ? (
         <>
+          <div className="progress-dots">
+            {[...Array(questions.length)].map((_, index) => (
+              <div
+                key={index}
+                className={`dot ${index === currentQuestion ? 'active' : ''} ${
+                  index < currentQuestion ? 'completed' : ''
+                }`}
+              />
+            ))}
+          </div>
           <p className="scam-description">
-            Congratulations! You have been selected to win a free iPhone. Enter your claim code to redeem your prize.
+            Question {currentQuestion + 1} of {questions.length}
           </p>
-          <form onSubmit={handleSubmit} className="scam-form">
-            <input
-              type="text"
-              name="claim"
-              placeholder="Enter Claim Code"
-              value={formData.claim}
-              onChange={handleChange}
-              className="scam-input"
-              required
-            />
-            <button type="submit" className="scam-button">Submit</button>
-          </form>
+          <div className="scam-form">
+            <p className="question-text">{questions[currentQuestion].question}</p>
+            <div className="options-container">
+              {questions[currentQuestion].options.map((option, index) => (
+                <button
+                  key={index}
+                  className="option-button"
+                  onClick={() => handleAnswer(index)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
         </>
       ) : (
         <>
@@ -45,8 +88,12 @@ function GiveawayScam() {
             <p>{feedback}</p>
           </div>
           <div className="home-leaderboard-container">
-            <button onClick={() => navigate('/home')} className="home-leaderboard-button">Home</button>
-            <button onClick={() => navigate('/leaderboard')} className="home-leaderboard-button">Leaderboard</button>
+            <button onClick={() => navigate('/home')} className="home-leaderboard-button">
+              Home
+            </button>
+            <button onClick={() => navigate('/leaderboard')} className="home-leaderboard-button">
+              Leaderboard
+            </button>
           </div>
         </>
       )}
