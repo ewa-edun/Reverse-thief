@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { generateScamQuestions, getPersonalizedFeedback } from '../utils/gemini';
+import { saveUserScore } from '../utils/firebase';
 
 function EmailScam() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const username = location.state?.username || "Anonymous";
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -31,6 +34,10 @@ function EmailScam() {
     } else {
       setLoading(true);
       const correctAnswers = questions.map(q => q.correctAnswer);
+      const score = newAnswers.filter((a, i) => a === correctAnswers[i]).length;
+      
+      await saveUserScore(username, 'Email Scam', score, questions.length);
+      
       const feedback = await getPersonalizedFeedback(
         'email phishing',
         newAnswers,

@@ -426,3 +426,62 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Leaderboard Styles */
+.leaderboard-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.leaderboard-entry {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  background: rgba(0, 255, 0, 0.05);
+  border: 1px solid var(--neon-green);
+  transition: all 0.3s ease;
+}
+
+.leaderboard-entry:hover {
+  transform: translateX(10px);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+.rank {
+  font-size: 2rem;
+  color: var(--terminal-green);
+  width: 60px;
+  text-align: center;
+}
+
+.score-details {
+  flex: 1;
+  text-align: left;
+  margin: 0 1rem;
+}
+
+.username {
+  color: var(--neon-green);
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.scam-type {
+  color: var(--terminal-green);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.score-value {
+  font-size: 1.5rem;
+  color: var(--neon-green);
+  text-shadow: 0 0 5px var(--neon-green);
+}
+
+.score-fraction {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-left: 0.5rem;
+}

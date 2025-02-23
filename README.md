@@ -2,14 +2,14 @@
 # **Reverse Thief**, your chaotic-good cybersecurity troll bot.  
 
 ## **Concept:**  
-It’s a **phishing honeypot** that tricks users into giving up fake credentials, then reveals that they fell for a scam and teaches them how to avoid real ones. Think of it as **"ethical scamming for education."**  
+Reverse Thief is an interactive phishing awareness game that flips the script on scammers. Players take on the role of a cybercriminal to understand how phishing attacks work while learning real-world cybersecurity defenses. Think of it as **"ethical scamming for education."** 
 
 ---
 
 ## **Tech Stack:**  
 - **Frontend:** React and Vanilla CSS (for a clean, interactive phishing simulation)  
 - **Database:** Firebase Firestore (to store user responses & analytics)  
-- **AI:** GPT API or GEMINI (to generate personalized scam messages)  
+- **AI:** GEMINI (to generate personalized scam question and feedback messages)  
 
 ---
 
@@ -67,15 +67,19 @@ It’s a **phishing honeypot** that tricks users into giving up fake credentials
 
 
 ### **2. Database (Firestore/)**
-- Store fake credentials (hashed for privacy) to show **common weak passwords**.  
 - Log phishing tactics users fall for most.  
 
 ---
 
 ## **Bonus Features:**  
-✅ **AI-Generated Scams** – Train an LLM to generate personalized scam emails based on real ones.  
 ✅ **Live Phishing Detector** – Let users paste emails/URLs to check if they’re scams.  
 ✅ **Chrome Extension** – Highlight phishing risks in real-time.  
+
+---
+
+## Future Enhancements
+- **Expanded Scam Types:** Include more phishing tactics like fake job offers and tech support scams.
+- **Real-World Case Studies:** Incorporate real phishing incidents for analysis.
 
 ---
 
