@@ -16,8 +16,7 @@ It’s a **phishing honeypot** that tricks users into giving up fake credentials
 ## **Key Features:**  
 1. **Scam Pages Generator:**  
    - Generate realistic UI but with intentional flaws (weird domain, bad SSL, etc.).  
-   - If they type a "password," log the mistake.  
-
+   
 #### **A. Classic Fake Login Page (Warm-up Scam)**  
 - Mimic common scammy login pages (banking, social media, email). 
 - The user lands on a **realistic-looking phishing site** (e.g., “FakeBank” or “InstaHack”).  

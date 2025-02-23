@@ -1,11 +1,93 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { generateScamQuestions, getPersonalizedFeedback } from '../utils/gemini';
 
+function EmailScam() {
+  const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
+  const [feedback, setFeedback] = useState('');
 
-function EmailScam(){
+  useEffect(() => {
+    async function loadQuestions() {
+      const generatedQuestions = await generateScamQuestions('email');
+      if (generatedQuestions) {
+        setQuestions(generatedQuestions);
+        setLoading(false);
+      }
+    }
+    loadQuestions();
+  }, []);
+
+  const handleAnswer = async (selectedOption) => {
+    const newAnswers = [...userAnswers, selectedOption];
+    setUserAnswers(newAnswers);
+
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      const correctAnswers = questions.map(q => q.correctAnswer);
+      const feedback = await getPersonalizedFeedback(
+        'email phishing',
+        newAnswers,
+        correctAnswers
+      );
+      setFeedback(feedback);
+      setSubmitted(true);
+    }
+  };
+
+  if (loading) {
     return (
-        <div>
-        <h1>EmailScam</h1>
-        </div>
-    )
+      <div className="scam-page">
+        <h1 className="scam-header">Loading Scenarios...</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="scam-page">
+      <h1 className="scam-header">Email Scam Simulator</h1>
+      {!submitted ? (
+        <>
+          <p className="scam-description">
+            Question {currentQuestion + 1} of {questions.length}
+          </p>
+          <div className="scam-form">
+            <p className="question-text">{questions[currentQuestion].question}</p>
+            <div className="options-container">
+              {questions[currentQuestion].options.map((option, index) => (
+                <button
+                  key={index}
+                  className="option-button"
+                  onClick={() => handleAnswer(index)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="ai-chat">
+            <p>{feedback}</p>
+          </div>
+          <div className="home-leaderboard-container">
+            <button onClick={() => navigate('/home')} className="home-leaderboard-button">
+              Home
+            </button>
+            <button onClick={() => navigate('/leaderboard')} className="home-leaderboard-button">
+              Leaderboard
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
-export default EmailScam
+export default EmailScam;
