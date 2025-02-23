@@ -7,9 +7,8 @@ It’s a **phishing honeypot** that tricks users into giving up fake credentials
 ---
 
 ## **Tech Stack:**  
-- **Frontend:** React (for a clean, interactive phishing simulation)  
-- **Backend:** Flask or Express.js (to handle responses)  
-- **Database:** Firebase Firestore or PostgreSQL (to store user responses & analytics)  
+- **Frontend:** React and Vanilla CSS (for a clean, interactive phishing simulation)  
+- **Database:** Firebase Firestore (to store user responses & analytics)  
 - **AI:** GPT API or GEMINI (to generate personalized scam messages)  
 
 ---
@@ -67,12 +66,8 @@ It’s a **phishing honeypot** that tricks users into giving up fake credentials
 - When the user enters info, don’t store real credentials—just log the mistakes.  
 - Redirect to an **educational page** explaining the scam.  
 
-### **2. Backend (Flask/Express)**
-- API routes:  
-  - `/log-attempt`: Saves fake credentials (to analyze trends).  
-  - `/educate`: Returns custom tips based on what they did wrong.  
 
-### **3. Database (Firestore/PostgreSQL)**
+### **2. Database (Firestore/)**
 - Store fake credentials (hashed for privacy) to show **common weak passwords**.  
 - Log phishing tactics users fall for most.  
 
@@ -86,47 +81,11 @@ It’s a **phishing honeypot** that tricks users into giving up fake credentials
 ---
 
 ## **Deployment:**  
-- **Frontend**: Vercel or Netlify  
-- **Backend**: Render or Railway  
-- **Database**: Firebase/PostgreSQL on Supabase  
+- **Frontend**: Vercel 
+- **Database**: Firebase 
 
 ---
 
-## **TL;DR:**
 You build a **fake phishing scam**, users get tricked, then you roast them with cybersecurity lessons. It's chaotic, ethical, and useful.  
 
-So, hacker queen, how far do you want to take this? We keeping it simple or going full **Black Mirror x Mr. Robot** mode?
-
-
-You're right—if it's just a single login scam, users will catch on quickly. We need to **diversify the scams** and **add dynamic elements** so they stay engaged. Let’s spice it up:  
-
---- 
-
-
-
-### **2. Gamification: The “Hacker XP” System**  
-Instead of just tricking them, we **score them**:  
-
-- **Each scam has difficulty levels** (easy, medium, expert).  
-- **Users earn XP** for avoiding scams.  
-- **Leaderboard of Shame**: The more mistakes they make, the worse their “Cyber IQ” score.  
-
 ---
-
-### **3. Dynamic Learning: AI-Powered “Scammer”**  
-- Instead of just pre-made scams, we **train an AI to generate new scam scenarios**.  
-- The AI **adapts to user responses** and creates more convincing scams each time.  
-
-Example: If a user falls for a fake “Netflix password reset” scam, the AI tries a **Spotify version next time**.  
-
----
-
-### **4. Deployment Plan**  
-- **MVP (Minimum Viable Product)**: Start with login scams + email phishing game.  
-- **Phase 2**: Add chatbot-based social engineering + giveaway scams.  
-- **Final Version**: AI-generated scams + leaderboard system.  
-
----
-
-## **Summary:**
-We turn **cybersecurity awareness into a game**, where users get tricked, roasted, and educated in real-time. More variety = **more chaos and more fun.**  
