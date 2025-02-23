@@ -1,5 +1,6 @@
-import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
-import app from '../firebaseConfig';
+import { getFirestore, collection, addDoc, query, orderBy, getDocs } from 'firebase/firestore';
+import { limit as firestoreLimit } from 'firebase/firestore';
+import app from '../firebase';
 
 const db = getFirestore(app);
 
@@ -20,10 +21,14 @@ export async function saveUserScore(username, scamType, score, totalQuestions) {
   }
 }
 
-export async function getTopScores(limit = 10) {
+export async function getTopScores(limitCount = 10) {
   try {
     const scoresRef = collection(db, 'scores');
-    const q = query(scoresRef, orderBy('percentage', 'desc'), limit(limit));
+    const q = query(
+      scoresRef, 
+      orderBy('percentage', 'desc'), 
+      firestoreLimit(limitCount)
+    );
     const querySnapshot = await getDocs(q);
     
     return querySnapshot.docs.map(doc => ({

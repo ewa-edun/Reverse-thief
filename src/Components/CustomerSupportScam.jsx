@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { generateScamQuestions, getPersonalizedFeedback } from '../utils/gemini';
+import { saveUserScore } from '../utils/firebase';
 
 function CustomerSupportScam() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const username = location.state?.username || "Anonymous";
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -31,8 +34,17 @@ function CustomerSupportScam() {
     } else {
       setLoading(true);
       const correctAnswers = questions.map(q => q.correctAnswer);
-      const aiFeedback = await getPersonalizedFeedback('customer support scam', answers, correctAnswers);
-      setFeedback(aiFeedback);
+      const score = answers.filter((a, i) => a === correctAnswers[i]).length;
+      
+      try {
+        await saveUserScore(username, 'Customer Support Scam', score, questions.length);
+        const aiFeedback = await getPersonalizedFeedback('customer support scam', answers, correctAnswers);
+        setFeedback(`Score saved! ${score}/${questions.length} correct.\n\n${aiFeedback}`);
+      } catch (error) {
+        console.error('Error saving score:', error);
+        setFeedback('Error saving score. ' + error.message);
+      }
+      
       setLoading(false);
       setSubmitted(true);
     }
@@ -101,4 +113,4 @@ function CustomerSupportScam() {
   );
 }
 
-export default CustomerSupportScam;
+export default CustomerSupportScam;

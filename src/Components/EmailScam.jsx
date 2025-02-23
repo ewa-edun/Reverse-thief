@@ -36,14 +36,28 @@ function EmailScam() {
       const correctAnswers = questions.map(q => q.correctAnswer);
       const score = newAnswers.filter((a, i) => a === correctAnswers[i]).length;
       
-      await saveUserScore(username, 'Email Scam', score, questions.length);
+      try {
+        console.log('Saving score:', {
+          username,
+          scamType: 'Email Scam',
+          score,
+          totalQuestions: questions.length
+        });
+        
+        await saveUserScore(username, 'Email Scam', score, questions.length);
+        console.log('Score saved successfully!');
+        
+        const feedback = await getPersonalizedFeedback(
+          'email phishing',
+          newAnswers,
+          correctAnswers
+        );
+        setFeedback(`Score saved! ${score}/${questions.length} correct.\n\n${feedback}`);
+      } catch (error) {
+        console.error('Error saving score:', error);
+        setFeedback('Error saving score. ' + error.message);
+      }
       
-      const feedback = await getPersonalizedFeedback(
-        'email phishing',
-        newAnswers,
-        correctAnswers
-      );
-      setFeedback(feedback);
       setLoading(false);
       setSubmitted(true);
     }

@@ -50,7 +50,7 @@ function Home() {
                         <p>{scam.description}</p>
                         <button 
                             className="cyber-button"
-                            onClick={() => navigate(scam.path)}
+                            onClick={() => navigate(scam.path, { state: { username } })}
                         >
                             START MISSION
                         </button>
